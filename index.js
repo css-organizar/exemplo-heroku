@@ -1,7 +1,14 @@
 const express = require('express')
 
+/**Utilitários para trabalhar com caminhos de arquivos e diretórios */
+
 const path = require('path')
+
+/**Definição da porta para START da API */
+
 const PORT = process.env.PORT || 5000
+
+/**Adicionando o "pg" para trabalhar com o PostgreSQL */
 
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -10,6 +17,8 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+
+/**Iniciando o express */
 
 const applicationServer = express()
 

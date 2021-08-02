@@ -100,6 +100,8 @@ Link:
 
 Crie um aplicativo no Heroku, que prepara o Heroku para receber seu código-fonte.
 
+Obs: No primceiro acesso será necessário realizar o LOGIN no Heroku CLI, este irá solicitar que você entre no browser e autorize a conexão.
+
 ```
 Windows PowerShell
 Copyright (C) Microsoft Corporation. Todos os direitos reservados.
