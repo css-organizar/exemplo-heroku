@@ -1,6 +1,6 @@
 # Exemplo de Deploy de API Node no HEROKU
 
-Repositório de exemplo de Deploy de API no Heroku
+Repositório de exemplo de Deploy de API Node no Heroku
 
 ## Comandos Básicos
 
