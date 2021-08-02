@@ -5,4 +5,4 @@ app.get('/', (req,res) => res.send('Teste Heroku'));
 
 const PORT = process.env.PORT || '3000';
 
-app.set("posrt",PORT);
+app.set("port",PORT);
