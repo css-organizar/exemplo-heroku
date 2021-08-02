@@ -1,12 +1,20 @@
 const express = require('express')
-const app = express()
+
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
-app.use(express.static(path.join(__dirname, 'public')))
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'ejs')
+const applicationServer = express()
 
-app.get('/', (req, res) => { res.send('Hello World!')})
+/**Iniciando a API */
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+applicationServer.use(express.static(path.join(__dirname, 'public')))
+applicationServer.set('views', path.join(__dirname, 'views'))
+applicationServer.set('view engine', 'ejs')
+
+/**Métodos da API */
+
+applicationServer.get('/', (req, res) => { res.send('Hello World!')})
+
+/**Start da API */
+
+applicationServer.listen(PORT, () => console.log(`Listening on ${ PORT }`))
