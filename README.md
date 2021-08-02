@@ -106,7 +106,7 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>heroku create
+PS E:\workspace\exemplo-heroku> heroku create
 
 Exemplo de Retorno
 ****************************
@@ -129,7 +129,7 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>heroku apps:rename <NOVO_NOME>
+PS E:\workspace\exemplo-heroku> heroku apps:rename <NOVO_NOME>
 
 Exemplo de Retorno
 ****************************
@@ -151,7 +151,7 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>git push heroku <BRANCH>
+PS E:\workspace\exemplo-heroku> git push heroku <BRANCH>
 ```
 
 ## Abrir a API no Browser
@@ -162,7 +162,7 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>heroku open
+PS E:\workspace\exemplo-heroku> heroku open
 ```
 
 ## Ver os Logs do Heroku
@@ -173,7 +173,7 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>heroku logs --tail
+PS E:\workspace\exemplo-heroku> heroku logs --tail
 ```
 
 ## Reiniciar a API
@@ -184,5 +184,5 @@ Copyright (C) Microsoft Corporation. Todos os direitos reservados.
 
 Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 
-PS E:\workspace\exemplo-heroku>heroku restart
+PS E:\workspace\exemplo-heroku> heroku restart
 ```
