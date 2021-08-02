@@ -3,4 +3,6 @@ const app = express();
 
 app.get('/', (req,res) => res.send('Teste Heroku'));
 
-app.listen(process.env.PORT || 3000);
+const PORT = process.env.PORT || '3000';
+
+app.set("posrt",PORT);
