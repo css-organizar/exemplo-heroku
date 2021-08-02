@@ -165,7 +165,7 @@ Experimente a nova plataforma cruzada PowerShell https://aka.ms/pscore6
 PS E:\workspace\exemplo-heroku>heroku open
 ```
 
-## Ver os Logs doo Heroku
+## Ver os Logs do Heroku
 
 ```
 Windows PowerShell
