@@ -4,6 +4,7 @@
   "description": "Exemplo criado para teste de deploy de API para o Heroku",
   "main": "index.js",
   "scripts": {
+    "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
