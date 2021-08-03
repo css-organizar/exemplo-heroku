@@ -1,12 +1,10 @@
 const express = require('express');
 const crypto = require('crypto');
 const connection = require('../database/connection');
-
-const jwtUtils = require('../commons/jwtUtils');
-
 const UserRoutes = express.Router();
 
-const UsuarioController = require('../controllers/UsuarioController');
+const jwtUtils = require('../../src/commons/JwtUtils');
+const UsuarioController = require('../../src/controllers/UsuarioController');
 
 UserRoutes.post('/usuario', jwtUtils.verifyJWT, UsuarioController.create);
 UserRoutes.get('/usuario', jwtUtils.verifyJWT, UsuarioController.get );
