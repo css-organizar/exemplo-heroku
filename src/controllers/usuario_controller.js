@@ -11,7 +11,12 @@ module.exports = {
             senha,
         })
 
+        console.log("created");
+
         const usuarios = await connection('usuario').where('usuario.id', id);
+
+        console.log("selected");
+
         return res.json(usuarios);
 
     },
