@@ -1,16 +1,16 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = {
-    status (req, res, next){
+    status(req, res, next) {
         res.json({
             status: "ativo",
             data: {
-               data_status: new Date()
+                data_status: new Date()
             }
         });
     },
 
-    authentication (req, res, next) {
+    authentication(req, res, next) {
         const { usr, pwd } = req.body;
 
         console.log(`Usuario: ${usr}`);

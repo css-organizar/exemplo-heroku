@@ -1,6 +1,5 @@
-
 exports.up = function(knex) {
-    return knex.schema.createTable('cliente', function (table) {
+    return knex.schema.createTable('cliente', function(table) {
         table.increments('id').primary();
         table.timestamps('data_cadastro');
         table.string('razao_social');
@@ -10,7 +9,7 @@ exports.up = function(knex) {
         table.string('email');
         table.string('telefone');
         table.string('senha');
-      }) 
+    })
 };
 
 exports.down = function(knex) {

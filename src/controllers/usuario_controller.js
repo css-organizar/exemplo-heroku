@@ -9,19 +9,13 @@ module.exports = {
             email,
             telefone,
             senha,
-        })
-
-        console.log("created");
+        }).returning('id');
 
         const usuarios = await connection('usuario').where('usuario.id', id);
-
-        console.log("selected");
-
         return res.json(usuarios);
-
     },
 
-    async get(req, res, next) {
+    asyncget(req, res, next) {
 
         if (req.query['email'] != null) {
             usuarios = await connection('usuario').select('*').where('usuario.email', req.query['email']);
