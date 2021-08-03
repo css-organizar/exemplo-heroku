@@ -11,7 +11,6 @@
         "test": "npx knex migrate:latest && npx knex seed:run && nodemon src/index.js",
         "dev": "npx knex migrate:latest && npx knex seed:run && nodemon --inspect src/index.js",
         "sync": "git push heroku master",
-        "dev": "npx knex migrate:latest && npx knex seed:run && nodemon --inspect src/index.js",
         "start": "npx knex migrate:latest && npx knex seed:run && node src/index.js"
     },
     "dependencies": {
