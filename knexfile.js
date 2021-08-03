@@ -2,6 +2,8 @@ require('dotenv').config();
 
 // Update with your config settings.
 
+// module.exports = 
+
 module.exports = {
 
   // development: {
@@ -72,24 +74,12 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: {
-      connectionString : process.env.DATABASE_URL,
-      ssl: false
-    },
-    pool: {
-      min: 0,
-      max: 15
-    },
-    // connection: {
-    //   connectionString: process.env.DATABASE_URL,
-    //   ssl: { rejectUnauthorized: false },
-    // },
+    debug: true,
+    connection: DB_URL,
     migrations: {
-      directory: "./src/database/migrations",
+      directory: './src/database/migrations'
     },
-    // seeds: {
-    //   directory: __dirname + "/db/seeds",
-    // },
+    ssl: true
   },
 
 };
