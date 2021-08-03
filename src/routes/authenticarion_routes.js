@@ -6,7 +6,7 @@ const jwtUtils = require('../commons/twj_utils');
 
 const AuthenticationRoutes = express.Router();
 
-const AuthenticationController = require('../controllers/uuthentication_controller');
+const AuthenticationController = require('../controllers/authenticarion_routes');
 
 AuthenticationRoutes.post('/login', AuthenticationController.authentication);
 AuthenticationRoutes.get('/status', AuthenticationController.status);
