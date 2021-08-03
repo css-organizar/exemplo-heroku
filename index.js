@@ -66,25 +66,25 @@ applicationServer.post('/login', (req, res, next) => {
  * Method: GET
  */
 
- applicationServer.get('/rota_query', (req,res) => {
+ applicationServer.get('/rota_query', verifyJWT, (req,res) => {
    return res.json({
      usuario: req.query['name']
    })
  })
 
-applicationServer.get('/rota_param/:name', (req,res) => {
+applicationServer.get('/rota_param/:name', verifyJWT, (req,res) => {
   return res.json({
     usuario: req.params['name']
   })
 })
 
-applicationServer.get('/rota_header', (req,res) => {
+applicationServer.get('/rota_header', verifyJWT, (req,res) => {
   return res.json({
     usuario: req.headers["name"]
   })
 })
 
-applicationServer.post('/rota_body', (req, res, next) => {
+applicationServer.post('/rota_body', verifyJWT, (req, res, next) => {
   return res.json({
     usuario: req.body.name
   })
@@ -95,7 +95,7 @@ applicationServer.post('/rota_body', (req, res, next) => {
  * Method: GET
  */
 
-applicationServer.get('/db', async (req, res) => {
+applicationServer.get('/db', verifyJWT, async (req, res) => {
     try {
       const client = await pool.connect();
       const result = await client.query('SELECT * FROM test_table');
@@ -113,7 +113,7 @@ applicationServer.get('/db', async (req, res) => {
  * Method: GET
  */
 
-applicationServer.get('/clientes', (req, res, next) => { 
+applicationServer.get('/clientes', verifyJWT, (req, res, next) => { 
     console.log("Retornou todos clientes!");
     res.json([{id:1,nome:'luiz'}]);
   }) 
