@@ -69,10 +69,11 @@ module.exports = {
   // }
 
   production: {
-    client: "pg",
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
+    client: 'postgresql',
+    connection: process.env.DATABASE_URL,
+    pool: {
+      min: 0,
+      max: 15
     },
     // connection: {
     //   connectionString: process.env.DATABASE_URL,
