@@ -8,9 +8,9 @@
     "main": "index.js",
     "scripts": {
         "install": "npx knex migrate:latest && npx knex seed:run",
-        "test": "nodemon src/index.js",
-        "dev": "nodemon --inspect src/index.js",
-        "start": "node src/index.js"
+        "test": "npx knex migrate:latest && npx knex seed:run && nodemon src/index.js",
+        "dev": "npx knex migrate:latest && npx knex seed:run && nodemon --inspect src/index.js",
+        "start": "npx knex migrate:latest && npx knex seed:run && node src/index.js"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
