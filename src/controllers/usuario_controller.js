@@ -26,12 +26,25 @@ module.exports = {
         }
 
         res.json(usuarios);
-
     },
 
     async getById(req, res, next) {
         const usuarios = await connection('usuario').select('*').where('usuario.id', req.params['id']);
         res.json(usuarios);
+    },
+
+    async update(req, res) {
+        const { nome, email, telefone, senha } = req.body;
+
+        const [id] = await connection('usuario').insert({
+            nome,
+            email,
+            telefone,
+            senha,
+        }).returning('id');
+
+        const usuarios = await connection('usuario').where('usuario.id', id);
+        return res.json(usuarios);
     },
 
     async delete(req, res, next) {
