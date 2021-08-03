@@ -15,7 +15,7 @@ module.exports = {
         return res.json(usuarios);
     },
 
-    asyncget(req, res, next) {
+    async asyncget(req, res, next) {
 
         if (req.query['email'] != null) {
             var usuarios = await connection('usuario').select('*').where('usuario.email', req.query['email']);
