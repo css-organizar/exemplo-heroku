@@ -18,10 +18,10 @@ module.exports = {
     asyncget(req, res, next) {
 
         if (req.query['email'] != null) {
-            usuarios = await connection('usuario').select('*').where('usuario.email', req.query['email']);
+            var usuarios = await connection('usuario').select('*').where('usuario.email', req.query['email']);
             res.json(usuarios);
         } else {
-            usuarios = await connection('usuario').select('*');
+            var usuarios = await connection('usuario').select('*');
             res.json(usuarios);
         }
 
