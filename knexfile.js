@@ -2,20 +2,24 @@
 
 module.exports = {
 
-  // development: {
-  //   client: 'sqlite3',
-  //   connection: {
-  //     filename: './dev.sqlite3'
-  //   }
-  // },
-
   development: {
-    client: 'pg',
+    client: 'sqlite3',
     connection: {
-      url: process.env.DATABASE_URL,
-      charset: 'utf8',
+      filename: './src/database/db.sqlite'
     },
+    migrations:{
+      directory: './src/database/migrations'
+    },
+    useNullAsDefault: true,
   },
+
+  // development: {
+  //   client: 'pg',
+  //   connection: {
+  //     url: process.env.DATABASE_URL,
+  //     charset: 'utf8',
+  //   },
+  // },
 
   // staging: {
   //   client: 'postgresql',
@@ -43,8 +47,8 @@ module.exports = {
       min: 2,
       max: 10,
     },
-    migrations: {
-      tableName: 'knex_migrations',
+    migrations:{
+      directory: './src/database/migrations'
     },
   },
 
@@ -65,18 +69,21 @@ module.exports = {
   // }
 
   production: {
-    client: 'pg',
-    connection: {
-      url: process.env.DATABASE_URL,
-      charset: 'utf8',
+    client: "pg",
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
     },
-    pool: {
-      min: 2,
-      max: 10,
-    },
+    // connection: {
+    //   connectionString: process.env.DATABASE_URL,
+    //   ssl: { rejectUnauthorized: false },
+    // },
     migrations: {
-      tableName: 'knex_migrations',
+      directory: "./src/database/migrations",
     },
+    // seeds: {
+    //   directory: __dirname + "/db/seeds",
+    // },
   },
 
 };
