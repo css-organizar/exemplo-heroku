@@ -31,24 +31,24 @@ applicationServer.use(express.static(path.join(__dirname, 'public')))
 applicationServer.set('views', path.join(__dirname, 'views'))
 applicationServer.set('view engine', 'ejs')
 
+applicationServer.use(express.json());
+applicationServer.use(express.urlencoded({ extended: true }));
+
 /**Métodos da API */
 
 applicationServer.post('/login', (req, res, next) => {
-  //esse teste abaixo deve ser feito no seu banco de dados
-  if(req.body.user === 'luiz' && req.body.password === '123'){
+  console.log(req.body.usr);
+  console.log(req.body.pwd);
+   if(req.body.usr === 'luiz' && req.body.pwd === '123'){
     //auth ok
     const id = 1; //esse id viria do banco de dados
     const token = jwt.sign({ id }, process.env.SECRET, {
       expiresIn: 300 // expires in 5min
     });
     return res.json({ auth: true, token: token });
-  }
+   }
   
-  res.status(500).json({message: 'Login inválido!'});
-})
-
-applicationServer.post('/logout', function(req, res) {
-    res.json({ auth: false, token: null });
+   res.status(500).json({message: 'Login inválido!'});
 })
 
 applicationServer.get('/', (req, res) => { res.send('Hello World!')})
@@ -81,7 +81,7 @@ applicationServer.get('/clientesjwt', verifyJWT, (req, res, next) => {
 applicationServer.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 function verifyJWT(req, res, next){
-    const token = req.headers['x-access-token'];
+    const token = req.headers['token'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
     
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
