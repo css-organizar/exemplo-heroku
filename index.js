@@ -34,7 +34,17 @@ applicationServer.set('view engine', 'ejs')
 applicationServer.use(express.json());
 applicationServer.use(express.urlencoded({ extended: true }));
 
-/**Métodos da API */
+/**
+ * Route: /
+ * Method: GET
+ */
+
+ applicationServer.get('/', (req, res) => { res.send('Hello World!')})
+
+/**
+ * Route: Login
+ * Method: POST
+ */
 
 applicationServer.post('/login', (req, res, next) => {
   console.log(req.body.usr);
@@ -51,7 +61,39 @@ applicationServer.post('/login', (req, res, next) => {
    res.status(500).json({message: 'Login inválido!'});
 })
 
-applicationServer.get('/', (req, res) => { res.send('Hello World!')})
+/**
+ * Route: db
+ * Method: GET
+ */
+
+ applicationServer.get('/rota_query', (req,res) => {
+   return res.json({
+     usuario: req.query['name']
+   })
+ })
+
+applicationServer.get('/rota_param/:name', (req,res) => {
+  return res.json({
+    usuario: req.params['name']
+  })
+})
+
+applicationServer.get('/rota_header', (req,res) => {
+  return res.json({
+    usuario: req.headers["name"]
+  })
+})
+
+applicationServer.post('/rota_body', (req, res, next) => {
+  return res.json({
+    usuario: req.body.name
+  })
+})
+
+/**
+ * Route: db
+ * Method: GET
+ */
 
 applicationServer.get('/db', async (req, res) => {
     try {
@@ -66,10 +108,20 @@ applicationServer.get('/db', async (req, res) => {
     }
   })
 
+/**
+ * Route: clientes
+ * Method: GET
+ */
+
 applicationServer.get('/clientes', (req, res, next) => { 
     console.log("Retornou todos clientes!");
     res.json([{id:1,nome:'luiz'}]);
   }) 
+
+/**
+ * Route: clientesjwt
+ * Method: GET
+ */
 
 applicationServer.get('/clientesjwt', verifyJWT, (req, res, next) => { 
       console.log("Retornou todos clientes!");
