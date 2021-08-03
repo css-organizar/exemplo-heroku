@@ -58,7 +58,7 @@ applicationServer.post('/login', (req, res, next) => {
     return res.json({ auth: true, token: token });
    }
   
-   res.status(500).json({message: 'Login inválido!'});
+   res.status(401).json({message: 'Login inválido!'});
 })
 
 /**
