@@ -26,8 +26,8 @@ applicationServer.use(express.urlencoded({ extended: true }));
 
 /**Routes */
 
-const UserRoutes = require('./routes/UsuarioRoutes');
-const AuthenticationRoutes = require('./routes/AuthenticationRoutes');
+const UserRoutes = require('./routes/usuario_routes');
+const AuthenticationRoutes = require('./routes/authenticarion_routes');
 
 applicationServer.use(AuthenticationRoutes);
 applicationServer.use(UserRoutes);
