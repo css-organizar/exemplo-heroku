@@ -7,7 +7,7 @@
     },
     "main": "index.js",
     "scripts": {
-        "install": "npx knex migrate:latest && npx knex seed:run",
+        "knexconfig": "npx knex migrate:latest && npx knex seed:run",
         "sync": "git push heroku master",
         "start": "npx knex migrate:latest && npx knex seed:run && node src/index.js"
     },

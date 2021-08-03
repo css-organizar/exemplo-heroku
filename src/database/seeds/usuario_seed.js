@@ -7,8 +7,6 @@ exports.seed = function(knex) {
             const dataAtual = new Date();
             return knex('usuario').insert([{
                     id: 1,
-                    created_at: dataAtual,
-                    updated_at: dataAtual,
                     nome: 'administrador',
                     email: 'administrador@gmail.coom',
                     telefone: '+5527999677326',
