@@ -6,7 +6,7 @@ const dotenv = require("dotenv-safe");
 const path = require('path');
 const cors = require('cors');
 
-/**URL */
+/**Controle de URL */
 
 var url = require('url');
 
