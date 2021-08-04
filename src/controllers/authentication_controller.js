@@ -1,43 +1,74 @@
 const jwt = require('jsonwebtoken');
+const connection = require('../database/connection');
+
+/**
+ * Status Result
+ *   - 200: ok 
+ *   - 201: created
+ *   - 202: Accepted
+ *   - 204: No Content
+ *   - 401: Unauthorized
+ */
 
 module.exports = {
     status(req, res, next) {
-        res.json({
-            status: "ativo",
-            data: {
-                data_status: new Date()
-            }
-        });
+        try {
+            return res.status(200).json({
+                status: "ativo",
+                data: {
+                    data_status: new Date()
+                }
+            });
+        } catch (e) {
+            return res.status(400).json({
+                message: "Falha",
+                error: e.message
+            });
+        }
     },
 
-    authentication(req, res, next) {
-        const { usr, pwd } = req.body;
+    async authentication(req, res, next) {
+        try {
+            const { usr, pwd } = req.body;
 
-        console.log(`Usuario: ${usr}`);
-        console.log(`Senha: ${pwd}`);
+            console.log(`email: ${usr}`);
+            console.log(`senha: ${pwd}`);
 
-        if (usr === 'luiz' && pwd === '123') {
+            const usuario = await connection('usuario')
+                .limit(1)
+                .where('email', usr)
+                .select('*');
 
-            //auth ok
-            const id = 1; //esse id viria do banco de dados
+            if (usr === usuario[0]['email'] && pwd === usuario[0]['senha']) {
 
-            const token = jwt.sign({ id }, process.env.SECRET, {
-                expiresIn: 900 // expires in 5min
+                //auth ok
+                const id = usuario[0]['id'];
+                const email = usuario[0]['email'];
+                const nome = usuario[0]['nome'];
+
+                const token = jwt.sign({ id, email, nome }, process.env.SECRET, {
+                    expiresIn: 3600 // expires in 1h
+                });
+
+                console.log(`Token Gerado com Sucesso!`);
+                console.log(`Token: ${token}`);
+
+                return res.status(201).json({
+                    auth: true,
+                    token: token
+                });
+
+            }
+
+            res.status(401).json({
+                message: 'Login inválido!'
             });
-
-            console.log(`Token Gerado com Sucesso!`);
-            console.log(`Token: ${token}`);
-
-            return res.json({
-                auth: true,
-                token: token
+        } catch (e) {
+            return res.status(400).json({
+                message: "Falha",
+                error: e.message
             });
-
         }
-
-        res.status(401).json({
-            message: 'Login inválido!'
-        });
 
     }
 }

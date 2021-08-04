@@ -7,6 +7,11 @@ const jwtUtils = require('../commons/twj_utils');
 const UsuarioController = require('../controllers/usuario_controller');
 
 UserRoutes.post(
+    '/register',
+    UsuarioController.register
+);
+
+UserRoutes.post(
     '/usuario',
     jwtUtils.verifyJWT,
     UsuarioController.create

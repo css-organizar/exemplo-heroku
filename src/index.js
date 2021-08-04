@@ -4,6 +4,7 @@ const express = require('express');
 
 const dotenv = require("dotenv-safe");
 const path = require('path');
+const cors = require('cors');
 
 /**Definição da porta para START da API */
 
@@ -20,6 +21,7 @@ dotenv.config();
 applicationServer.use(express.static(path.join(__dirname, 'public')));
 applicationServer.set('views', path.join(__dirname, 'views'));
 applicationServer.set('view engine', 'ejs');
+applicationServer.use(cors());
 
 applicationServer.use(express.json());
 applicationServer.use(express.urlencoded({ extended: true }));
