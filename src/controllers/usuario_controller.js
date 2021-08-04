@@ -1,4 +1,6 @@
 const connection = require('../database/connection');
+const md5 = require('md5');
+const dbUtils = require('../commons/database_function');
 
 /**
  * Status Result
@@ -29,7 +31,7 @@ module.exports = {
 
     async register(req, res) {
         try {
-            const { nome, email, telefone, senha } = req.body;
+            var { nome, email, telefone, senha } = req.body;
 
             if (await emailValidation(email) == true) {
                 return res.status(400).json({
@@ -61,6 +63,8 @@ module.exports = {
                 });
             }
 
+            senha = md5(senha);
+
             const [id] = await connection('usuario').insert({
                 nome,
                 email,
@@ -68,7 +72,12 @@ module.exports = {
                 senha,
             }).returning('id');
 
-            const usuarios = await connection('usuario').where('usuario.id', id);
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
+            const usuarios = await connection('usuario')
+                .select(listOfTableColumns.split(","))
+                .where('usuario.id', id);
+
             return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
@@ -80,13 +89,15 @@ module.exports = {
 
     async create(req, res) {
         try {
-            const { nome, email, telefone, senha } = req.body;
+            var { nome, email, telefone, senha } = req.body;
 
             if (await emailValidation(email) == true) {
                 return res.status(400).json({
                     message: "E-mail já cadastrado no sistema",
                 });
             }
+
+            senha = md5(senha);
 
             const [id] = await connection('usuario').insert({
                 nome,
@@ -95,7 +106,12 @@ module.exports = {
                 senha,
             }).returning('id');
 
-            const usuarios = await connection('usuario').where('usuario.id', id);
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
+            const usuarios = await connection('usuario')
+                .select(listOfTableColumns.split(","))
+                .where('usuario.id', id);
+
             return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
@@ -111,11 +127,18 @@ module.exports = {
             res.header('x-total-count', 0);
             res.header('x-total-count', 0);
 
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
             if (req.query['email'] != null) {
-                var usuarios = await connection('usuario').select('*').where('usuario.email', req.query['email']);
+                var usuarios = await connection('usuario')
+                    .select(listOfTableColumns.split(","))
+                    .where('usuario.email', req.query['email']);
+
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
             } else {
-                var usuarios = await connection('usuario').select('*');
+                var usuarios = await connection('usuario')
+                    .select(listOfTableColumns.split(","));
+
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
             }
         } catch (e) {
@@ -128,7 +151,12 @@ module.exports = {
 
     async getById(req, res, next) {
         try {
-            const usuarios = await connection('usuario').select('*').where('usuario.id', req.params['id']);
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
+            const usuarios = await connection('usuario')
+                .select(listOfTableColumns.split(","))
+                .where('usuario.id', req.params['id']);
+
             return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
@@ -147,6 +175,12 @@ module.exports = {
                 });
             }
 
+            if (req.body["senha"] != undefined) {
+                return res.status(400).json({
+                    message: "O campo senha não pode ser informado neste método",
+                });
+            }
+
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
                 .update(req.body)
@@ -158,7 +192,12 @@ module.exports = {
                 });
             }
 
-            const usuarios = await connection('usuario').where('usuario.id', id);
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
+            const usuarios = await connection('usuario')
+                .select(listOfTableColumns.split(","))
+                .where('usuario.id', id);
+
             return res.status(202).json(usuarios[0]);
         } catch (e) {
             return res.status(400).send({
@@ -188,7 +227,10 @@ module.exports = {
                 });
             }
 
-            const usuarios = await connection('usuario').where('usuario.id', req.params['id']).del();
+            const usuarios = await connection('usuario')
+                .where('usuario.id', req.params['id'])
+                .del();
+
             res.status(204).json(usuarios);
         } catch (e) {
             return res.status(400).json({

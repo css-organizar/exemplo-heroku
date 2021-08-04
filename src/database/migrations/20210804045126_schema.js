@@ -1,5 +1,24 @@
 exports.up = function(knex) {
-    return knex.schema.createTable('configuracoes', function(table) {
+    return knex.schema
+        .createTable('system', function(table) {
+
+            table
+                .timestamps(true, true);
+
+            table
+                .string('application_token')
+                .comment("Token de Identificação da Empresa")
+                .primary();
+
+            table
+                .datetime('expiration', { precision: 6 })
+                .defaultTo(knex.fn.now(6));
+
+        })
+        .createTable('configuracoes', function(table) {
+
+            table
+                .timestamps(true, true);
 
             table
                 .increments('id')
@@ -7,12 +26,34 @@ exports.up = function(knex) {
                 .primary();
 
         })
-        .createTable('usuario', function(table) {
+        .createTable('usuario_perfil', function(table) {
+
+            table
+                .timestamps(true, true);
 
             table
                 .increments('id')
                 .comment("Identificador do Registro")
                 .primary();
+
+            table
+                .string('descricao')
+                .comment("Descrição do Perfil do usuário");
+
+        })
+        .createTable('usuario', function(table) {
+
+            table
+                .timestamps(true, true);
+
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
+
+            table
+                .integer('usuario_perfil_id')
+                .comment("Identificador do Registro");
 
             table
                 .string('nome')
@@ -35,29 +76,10 @@ exports.up = function(knex) {
                 .comment("Status do Usuário")
                 .defaultTo(false);
 
-        })
-        .createTable('campos', function(table) {
-
-            table
-                .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
-
-        })
-        .createTable('campos_valor', function(table) {
-
-            table
-                .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
-
-        })
-        .createTable('tab4', function(table) {
-
-            table
-                .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
+            // table
+            //     .foreign("usuario_perfil_id")
+            //     .references("id")
+            //     .inTable("usuario_perfil");
 
         })
 };

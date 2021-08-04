@@ -2,8 +2,7 @@ const express = require('express');
 const crypto = require('crypto');
 const connection = require('../database/connection');
 const UserRoutes = express.Router();
-
-const jwtUtils = require('../commons/twj_utils');
+const jwtUtils = require('../commons/jwt_function');
 const UsuarioController = require('../controllers/usuario_controller');
 
 UserRoutes.post(

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const connection = require('../database/connection');
+const md5 = require('md5');
 
 /**
  * Status Result
@@ -42,7 +43,9 @@ module.exports = {
                 });
             }
 
-            if (usr === usuario[0]['email'] && pwd === usuario[0]['senha']) {
+            const pwdMD5 = md5(pwd);
+
+            if (usr === usuario[0]['email'] && pwdMD5 === usuario[0]['senha']) {
 
                 //auth ok
                 const id = usuario[0]['id'];
