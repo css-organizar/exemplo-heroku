@@ -1,33 +1,65 @@
 exports.up = function(knex) {
-    return knex.schema.createTable('usuario', function(table) {
+    return knex.schema.createTable('configuracoes', function(table) {
 
-        table
-            .increments('id')
-            .comment("Identificador do Registro")
-            .primary();
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
 
-        table
-            .string('nome')
-            .comment("Nome do Usuário");
+        })
+        .createTable('usuario', function(table) {
 
-        table
-            .string('email')
-            .comment("Endereço de Correio Eletrônico");
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
 
-        table
-            .string('telefone')
-            .comment("Telefone de Contato");
+            table
+                .string('nome')
+                .comment("Nome do Usuário");
 
-        table
-            .string('senha')
-            .comment("Senha de Acesso");
+            table
+                .string('email')
+                .comment("Endereço de Correio Eletrônico");
 
-        table
-            .boolean('status')
-            .comment("Status do Usuário")
-            .defaultTo(false);
+            table
+                .string('telefone')
+                .comment("Telefone de Contato");
 
-    })
+            table
+                .string('senha')
+                .comment("Senha de Acesso");
+
+            table
+                .boolean('status')
+                .comment("Status do Usuário")
+                .defaultTo(false);
+
+        })
+        .createTable('campos', function(table) {
+
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
+
+        })
+        .createTable('campos_valor', function(table) {
+
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
+
+        })
+        .createTable('tab4', function(table) {
+
+            table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
+
+        })
 };
 
 exports.down = function(knex) {
