@@ -8,7 +8,7 @@ exports.seed = function(knex) {
             return knex('usuario').insert([{
                     id: 1,
                     nome: 'administrador',
-                    email: 'administrador@gmail.coom',
+                    email: 'administrador@gmail.com',
                     telefone: '+5527999677326',
                     senha: '123456',
                     status: true

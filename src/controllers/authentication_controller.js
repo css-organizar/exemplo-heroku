@@ -31,13 +31,16 @@ module.exports = {
         try {
             const { usr, pwd } = req.body;
 
-            console.log(`email: ${usr}`);
-            console.log(`senha: ${pwd}`);
-
             const usuario = await connection('usuario')
                 .limit(1)
                 .where('email', usr)
                 .select('*');
+
+            if (usuario.length === 0) {
+                res.status(401).json({
+                    message: 'Login inválido!'
+                });
+            }
 
             if (usr === usuario[0]['email'] && pwd === usuario[0]['senha']) {
 
@@ -50,9 +53,6 @@ module.exports = {
                     expiresIn: 3600 // expires in 1h
                 });
 
-                console.log(`Token Gerado com Sucesso!`);
-                console.log(`Token: ${token}`);
-
                 return res.status(201).json({
                     auth: true,
                     token: token
@@ -61,7 +61,7 @@ module.exports = {
             }
 
             res.status(401).json({
-                message: 'Login inv�lido!'
+                message: 'Login inválido!'
             });
         } catch (e) {
             return res.status(400).json({

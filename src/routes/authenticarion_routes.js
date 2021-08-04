@@ -9,12 +9,12 @@ const AuthenticationRoutes = express.Router();
 const AuthenticationController = require('../controllers/authentication_controller');
 
 AuthenticationRoutes.post(
-    '/login',
+    '/v1/login',
     AuthenticationController.authentication
 );
 
 AuthenticationRoutes.get(
-    '/status',
+    '/v1/status',
     AuthenticationController.status
 );
 

@@ -7,36 +7,36 @@ const jwtUtils = require('../commons/twj_utils');
 const UsuarioController = require('../controllers/usuario_controller');
 
 UserRoutes.post(
-    '/register',
+    '/v1/signup',
     UsuarioController.register
 );
 
 UserRoutes.post(
-    '/usuario',
+    '/v1/usuario',
     jwtUtils.verifyJWT,
     UsuarioController.create
 );
 
 UserRoutes.get(
-    '/usuario',
+    '/v1/usuario',
     jwtUtils.verifyJWT,
     UsuarioController.getAll
 );
 
 UserRoutes.get(
-    '/usuario/:id',
+    '/v1/usuario/:id',
     jwtUtils.verifyJWT,
     UsuarioController.getById
 );
 
 UserRoutes.put(
-    '/usuario/:id',
+    '/v1/usuario/:id',
     jwtUtils.verifyJWT,
     UsuarioController.update
 );
 
 UserRoutes.delete(
-    '/usuario/:id',
+    '/v1/usuario/:id',
     jwtUtils.verifyJWT,
     UsuarioController.delete
 );

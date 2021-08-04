@@ -1,18 +1,41 @@
 const express = require('express');
 
-/**Utilit·rios para trabalhar com caminhos de arquivos e diretÛrios */
+/**Utilit√°rios para trabalhar com caminhos de arquivos e diret√≥rios */
 
 const dotenv = require("dotenv-safe");
 const path = require('path');
 const cors = require('cors');
 
-/**DefiniÁ„o da porta para START da API */
+/**URL */
+
+var url = require('url');
+
+function fullUrl(req) {
+    return url.format({
+        protocol: req.protocol,
+        host: req.get('host'),
+        pathname: req.originalUrl
+    });
+}
+
+/**Defini√ß√£o da porta para START da API */
 
 const PORT = process.env.PORT || 5000;
 
 /**Iniciando o express */
 
 const applicationServer = express();
+
+/**swagger */
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
+
+applicationServer.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+);
 
 /**Iniciando a API */
 
@@ -22,7 +45,6 @@ applicationServer.use(express.static(path.join(__dirname, 'public')));
 applicationServer.set('views', path.join(__dirname, 'views'));
 applicationServer.set('view engine', 'ejs');
 applicationServer.use(cors());
-
 applicationServer.use(express.json());
 applicationServer.use(express.urlencoded({ extended: true }));
 

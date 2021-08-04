@@ -8,11 +8,11 @@ exports.up = function(knex) {
 
         table
             .string('nome')
-            .comment("Nome do Usu·rio");
+            .comment("Nome do Usu√°rio");
 
         table
             .string('email')
-            .comment("EndereÁo de Correio EletrÙnico");
+            .comment("Endere√ßo de Correio Eletr√¥nico");
 
         table
             .string('telefone')
@@ -24,7 +24,8 @@ exports.up = function(knex) {
 
         table
             .boolean('status')
-            .comment("Status do Usu·rio");
+            .comment("Status do Usu√°rio")
+            .defaultTo(false);
 
     })
 };

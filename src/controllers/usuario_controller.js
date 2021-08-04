@@ -9,14 +9,37 @@ const connection = require('../database/connection');
  *   - 401: Unauthorized
  */
 
+async function emailValidation(email) {
+    const usuario = await connection('usuario')
+        .where('email', email)
+        .select();
+
+    if (usuario.length === 0) {
+        return false;
+    }
+
+    if (usuario[0]['id'] > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 module.exports = {
+
     async register(req, res) {
         try {
             const { nome, email, telefone, senha } = req.body;
 
+            if (await emailValidation(email) == true) {
+                return res.status(400).json({
+                    message: "E-mail j√° cadastrado no sistema",
+                });
+            }
+
             if (nome === undefined) {
                 return res.status(400).json({
-                    message: "Favor informar o nome do usu·rio",
+                    message: "Favor informar o nome do usu√°rio",
                 });
             }
 
@@ -28,13 +51,13 @@ module.exports = {
 
             if (telefone === undefined) {
                 return res.status(400).json({
-                    message: "Favor informar o n˙mero do telefone",
+                    message: "Favor informar o n√∫mero do telefone",
                 });
             }
 
             if (senha === undefined) {
                 return res.status(400).json({
-                    message: "Favor informar uma senha v·lida",
+                    message: "Favor informar uma senha v√°lida",
                 });
             }
 
@@ -46,7 +69,7 @@ module.exports = {
             }).returning('id');
 
             const usuarios = await connection('usuario').where('usuario.id', id);
-            return res.status(201).json(usuarios);
+            return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
                 message: "Falha",
@@ -59,6 +82,12 @@ module.exports = {
         try {
             const { nome, email, telefone, senha } = req.body;
 
+            if (await emailValidation(email) == true) {
+                return res.status(400).json({
+                    message: "E-mail j√° cadastrado no sistema",
+                });
+            }
+
             const [id] = await connection('usuario').insert({
                 nome,
                 email,
@@ -67,7 +96,7 @@ module.exports = {
             }).returning('id');
 
             const usuarios = await connection('usuario').where('usuario.id', id);
-            return res.status(201).json(usuarios);
+            return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
                 message: "Falha",
@@ -100,7 +129,7 @@ module.exports = {
     async getById(req, res, next) {
         try {
             const usuarios = await connection('usuario').select('*').where('usuario.id', req.params['id']);
-            return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
+            return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
                 message: "Falha",
@@ -111,6 +140,13 @@ module.exports = {
 
     async update(req, res) {
         try {
+
+            if (Number(req.params['id']) === 1) {
+                return res.status(400).json({
+                    message: "O usu√°rio administrador nao pode ser alterado",
+                });
+            }
+
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
                 .update(req.body)
@@ -118,12 +154,12 @@ module.exports = {
 
             if (id === undefined) {
                 return res.status(400).json({
-                    message: "CÛdigo do usu·rio inv·lido ou inexistente",
+                    message: "C√≥digo do usu√°rio inv√°lido ou inexistente",
                 });
             }
 
             const usuarios = await connection('usuario').where('usuario.id', id);
-            return res.status(202).json(usuarios);
+            return res.status(202).json(usuarios[0]);
         } catch (e) {
             return res.status(400).send({
                 message: "Falha",
@@ -134,6 +170,13 @@ module.exports = {
 
     async delete(req, res, next) {
         try {
+
+            if (Number(req.params['id']) === 1) {
+                return res.status(400).json({
+                    message: "O usu√°rio administrador nao pode ser exclu√≠do",
+                });
+            }
+
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
                 .select()
@@ -141,7 +184,7 @@ module.exports = {
 
             if (id === undefined) {
                 return res.status(400).json({
-                    message: "CÛdigo do usu·rio inv·lido ou inexistente",
+                    message: "C√≥digo do usu√°rio inv√°lido ou inexistente",
                 });
             }
 
