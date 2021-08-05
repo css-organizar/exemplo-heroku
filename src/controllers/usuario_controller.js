@@ -154,7 +154,8 @@ module.exports = {
 
                 usuarios = await connection('usuario')
                     .select(listOfTableColumns.split(","))
-                    .where('usuario.email', req.query['email']);
+                    .where('usuario.email', req.query['email'])
+                    .orderBy('id');
 
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
 
@@ -188,7 +189,8 @@ module.exports = {
 
             const usuarios = await connection('usuario')
                 .select(listOfTableColumns.split(","))
-                .where('usuario.id', req.params['id']);
+                .where('usuario.id', req.params['id'])
+                .orderBy('id');
 
             return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios[0]);
 
@@ -231,6 +233,7 @@ module.exports = {
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
                 .update(internalBody)
+                .orderBy('id')
                 .returning('id');
 
             if (id === undefined) {
@@ -245,7 +248,8 @@ module.exports = {
 
             const usuarios = await connection('usuario')
                 .select(listOfTableColumns.split(","))
-                .where('usuario.id', id);
+                .where('usuario.id', id)
+                .orderBy('id');
 
             return res.status(202).json(usuarios[0]);
 
@@ -277,6 +281,7 @@ module.exports = {
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
                 .select()
+                .orderBy('id')
                 .returning('id');
 
             if (id === undefined) {
@@ -292,6 +297,7 @@ module.exports = {
             const usuarios = await connection('usuario')
                 .select(listOfTableColumns.split(","))
                 .where('usuario.id', req.params['id'])
+                .orderBy('id')
                 .del();
 
             return res.status(204).json(usuarios);
