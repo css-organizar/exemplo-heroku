@@ -43,6 +43,13 @@ module.exports = {
                 .where('application_token', appToken)
                 .select();
 
+            const dataLocal = new Date();
+
+            if (systemConfig[0]["data_bloqueio"] < dataLocal)
+                return res.status(400).send({
+                    message: "Serviço bloqueado, entre em contato com o suporte."
+                });
+
             if (systemConfig.length === 0)
                 return res.status(400).send({
                     message: "Token da Aplicação inválido ou não informado."

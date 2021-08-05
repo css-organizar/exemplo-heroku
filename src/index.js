@@ -40,9 +40,11 @@ applicationServer.use(express.urlencoded({ extended: true }));
 
 const UserRoutes = require('./routes/usuario_routes');
 const AuthenticationRoutes = require('./routes/authenticarion_routes');
+const SystemRoutes = require('./routes/system_routes');
 
 applicationServer.use(AuthenticationRoutes);
 applicationServer.use(UserRoutes);
+applicationServer.use(SystemRoutes);
 
 /**Start da API */
 

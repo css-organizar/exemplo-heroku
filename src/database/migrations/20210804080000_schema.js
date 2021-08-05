@@ -6,9 +6,14 @@ exports.up = function(knex) {
                 .timestamps(true, true);
 
             table
+                .increments('id')
+                .comment("Identificador do Registro")
+                .primary();
+
+            table
                 .string('application_token')
                 .comment("Token de Identificação da Empresa")
-                .primary();
+                .unique();
 
             table
                 .string('razao_social')
@@ -19,7 +24,7 @@ exports.up = function(knex) {
                 .comment("CPF/CNPJ da Pessoa Vinculada");
 
             table
-                .dateTime('expiration', { precision: 6 })
+                .dateTime('data_bloqueio', { precision: 6 })
                 .defaultTo(knex.fn.now());
 
         })
