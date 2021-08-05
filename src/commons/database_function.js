@@ -35,8 +35,10 @@ module.exports = {
 
     async validarEmailCadastroUsuario(email) {
 
+        const internalEmail = email || '';
+
         const usuario = await connection('usuario')
-            .where('email', email)
+            .where('email', internalEmail)
             .select();
 
         if (usuario.length === 0) {

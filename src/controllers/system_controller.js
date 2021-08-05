@@ -9,6 +9,13 @@ module.exports = {
 
         try {
 
+            if (process.env.SECRET != req.headers['secret']) {
+                return res.status(400)
+                    .json({
+                        message: "Credenciais inválidas"
+                    });
+            }
+
             var listOfTableColumns = await dbUtils.getListOfTableColumns('system', 'senha');
 
             const usuarios = await connection('system')

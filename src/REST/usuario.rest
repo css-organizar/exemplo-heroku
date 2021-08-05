@@ -1,8 +1,0 @@
-@apiurl = http://localhost:5000/v1
-@applicationToken = 6ffc84b15b19484c43edac8a9d9a91bd984d2a3ee1b3794963fe9c9c9173dca1
-@userToken = 6ffc84b15b19484c43edac8a9d9a91bd984d2a3ee1b3794963fe9c9c9173dca1
-
-GET {{apiurl}}/status HTTP/1.1
-content-type: application/json
-application-token: {{applicationToken}}
-toke:{{userToken}}
