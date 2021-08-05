@@ -10,7 +10,7 @@
         "knexconfig": "npx knex migrate:latest && npx knex seed:run",
         "sync": "git push heroku master",
         "start": "npx knex migrate:latest && npx knex seed:run && node src/index.js",
-        "dev": "nodemon --inspect src/index.js",
+        "dev": "npx knex migrate:latest && npx knex seed:run && nodemon --inspect src/index.js",
         "start-gendoc": "node swagger.js"
     },
     "dependencies": {
@@ -18,6 +18,7 @@
         "cors": "^2.8.5",
         "dotenv-safe": "^8.2.0",
         "ejs": "^3.1.5",
+        "eslint": "^7.32.0",
         "express": "^4.17.1",
         "jsonwebtoken": "^8.5.1",
         "knex": "^0.95.9",
