@@ -16,14 +16,6 @@ exports.up = function(knex) {
                 .unique();
 
             table
-                .string('razao_social')
-                .comment("Nome ou Razão Social da Pessoa Vinculada");
-
-            table
-                .string('cpf_cnpj')
-                .comment("CPF/CNPJ da Pessoa Vinculada");
-
-            table
                 .dateTime('data_bloqueio', { precision: 6 })
                 .defaultTo(knex.fn.now());
 
