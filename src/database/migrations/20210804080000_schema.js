@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 exports.up = function(knex) {
     return knex.schema
         .createTable('system', function(table) {

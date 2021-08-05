@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 const express = require('express');
 const crypto = require('crypto');
 const connection = require('../database/connection');

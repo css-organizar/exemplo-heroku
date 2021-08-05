@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 var crypto = require("crypto");
 
 exports.seed = function(knex) {

@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 const md5 = require('md5');
 
 exports.seed = function(knex) {

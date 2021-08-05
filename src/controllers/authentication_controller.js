@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-
 const jwt = require('jsonwebtoken');
 const connection = require('../database/connection');
 const md5 = require('md5');
