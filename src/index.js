@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const express = require('express');
 
 /**Utilitários para trabalhar com caminhos de arquivos e diretórios */
