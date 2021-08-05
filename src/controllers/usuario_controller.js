@@ -48,7 +48,8 @@ module.exports = {
                 });
             }
 
-            internalBody['senha'] = md5(internalBody['senha']);
+            if (internalBody['senha'] != undefined)
+                internalBody['senha'] = md5(internalBody['senha']);
 
             const [id] = await connection('usuario')
                 .insert(internalBody)
@@ -74,22 +75,26 @@ module.exports = {
         await jwtUtils.validateApplicationToken(req, res);
 
         try {
-            var { nome, email, telefone, senha } = req.body;
+            var internalBody = req.body;
 
-            if (await dbUtils.validarEmailCadastroUsuario(email) == true) {
+            if (internalBody['email'] === undefined) {
+                return res.status(400).json({
+                    message: "Favor informar o e-mail",
+                });
+            }
+
+            if (await dbUtils.validarEmailCadastroUsuario(internalBody['email']) == true) {
                 return res.status(400).json({
                     message: "E-mail já cadastrado no sistema",
                 });
             }
 
-            senha = md5(senha);
+            if (internalBody['senha'] != undefined)
+                internalBody['senha'] = md5(internalBody['senha']);
 
-            const [id] = await connection('usuario').insert({
-                nome,
-                email,
-                telefone,
-                senha,
-            }).returning('id');
+            const [id] = await connection('usuario')
+                .insert(req.body)
+                .returning('id');
 
             var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
 
@@ -131,6 +136,7 @@ module.exports = {
 
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
             }
+
         } catch (e) {
             return res.status(400).json({
                 message: "Falha ao tentar listar usuarios",
@@ -144,6 +150,7 @@ module.exports = {
         await jwtUtils.validateApplicationToken(req, res);
 
         try {
+
             var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
 
             const usuarios = await connection('usuario')
@@ -151,6 +158,7 @@ module.exports = {
                 .where('usuario.id', req.params['id']);
 
             return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios[0]);
+
         } catch (e) {
             return res.status(400).json({
                 message: "Falha ao tentar listar usuario pelo ID",
@@ -179,7 +187,8 @@ module.exports = {
                 });
             }
 
-            internalBody["senha"] = md5(internalBody["senha"]) || '';
+            if (internalBody["senha"] != undefined)
+                internalBody["senha"] = md5(internalBody["senha"]) || '';
 
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
