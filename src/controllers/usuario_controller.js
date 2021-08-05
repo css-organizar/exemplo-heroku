@@ -5,15 +5,6 @@ const connection = require('../database/connection');
 const md5 = require('md5');
 const dbUtils = require('../commons/database_function');
 
-/**
- * Status Result
- *   - 200: ok 
- *   - 201: created
- *   - 202: Accepted
- *   - 204: No Content
- *   - 401: Unauthorized
- */
-
 module.exports = {
 
     async register(req, res) {
