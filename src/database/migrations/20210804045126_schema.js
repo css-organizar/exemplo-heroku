@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 exports.up = function(knex) {
     return knex.schema
         .createTable('system', function(table) {
@@ -11,8 +14,16 @@ exports.up = function(knex) {
                 .primary();
 
             table
-                .datetime('expiration', { precision: 6 })
-                .defaultTo(knex.fn.now(6));
+                .string('razao_social')
+                .comment("Nome ou Razão Social da Pessoa Vinculada");
+
+            table
+                .string('cpf_cnpj')
+                .comment("CPF/CNPJ da Pessoa Vinculada");
+
+            table
+                .dateTime('expiration', { precision: 6 })
+                .defaultTo(knex.fn.now());
 
         })
         .createTable('configuracoes', function(table) {
@@ -24,6 +35,22 @@ exports.up = function(knex) {
                 .increments('id')
                 .comment("Identificador do Registro")
                 .primary();
+
+            table
+                .string('cpf_cnpj')
+                .comment("CPF/CNPJ da Pessoa Vinculada");
+
+            table
+                .string('instagram')
+                .comment("Link do Perfil no Instagram");
+
+            table
+                .string('whatsapp')
+                .comment("Telefone Vinculado ao Whatsapp");
+
+            table
+                .string('email')
+                .comment("E-mail de contato");
 
         })
         .createTable('usuario_perfil', function(table) {
@@ -53,7 +80,8 @@ exports.up = function(knex) {
 
             table
                 .integer('usuario_perfil_id')
-                .comment("Identificador do Registro");
+                .comment("Identificador do Registro")
+                .defaultTo(2);
 
             table
                 .string('nome')
@@ -76,10 +104,10 @@ exports.up = function(knex) {
                 .comment("Status do Usuário")
                 .defaultTo(false);
 
-            // table
-            //     .foreign("usuario_perfil_id")
-            //     .references("id")
-            //     .inTable("usuario_perfil");
+            table
+                .foreign("usuario_perfil_id")
+                .references("id")
+                .inTable("usuario_perfil");
 
         })
 };
