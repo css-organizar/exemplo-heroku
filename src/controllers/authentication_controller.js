@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const jwt = require('jsonwebtoken');
 const connection = require('../database/connection');
 const md5 = require('md5');
@@ -22,8 +25,10 @@ module.exports = {
             });
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
-                error: e.message
+                status: "inativo",
+                data: {
+                    data_status: new Date()
+                }
             });
         }
     },
