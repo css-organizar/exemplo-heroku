@@ -1,7 +1,9 @@
 const connection = require('../database/connection');
 
 module.exports = {
+
     async getListOfTableColumns(tableName, ignoreFields, useTimestamps = false) {
+
         const tableField = await connection('information_schema.columns')
             .select('column_name')
             .where('table_name', tableName)
@@ -28,8 +30,11 @@ module.exports = {
         }
 
         return columns;
+
     },
+
     async validarEmailCadastroUsuario(email) {
+
         const usuario = await connection('usuario')
             .where('email', email)
             .select();
@@ -43,5 +48,7 @@ module.exports = {
         } else {
             return false;
         }
+
     }
+
 }

@@ -4,22 +4,28 @@ const md5 = require('md5');
 const jwtUtils = require('../commons/jwt_function');
 
 module.exports = {
+
     async status(req, res, next) {
 
         await jwtUtils.validateApplicationToken(req, res);
 
         try {
+
             return res.status(200).json({
                 status: "ativo",
                 data_status: new Date()
             });
+
         } catch (e) {
+
             return res.status(400).json({
                 status: "inativo",
                 data_status: new Date(),
                 erro: e.message
             });
+
         }
+
     },
 
     async authentication(req, res, next) {
@@ -27,6 +33,7 @@ module.exports = {
         await jwtUtils.validateApplicationToken(req, res);
 
         try {
+
             const { usr, pwd } = req.body;
 
             const usuario = await connection('usuario')
@@ -68,12 +75,16 @@ module.exports = {
             return res.status(401).json({
                 message: 'Login inválido!'
             });
+
         } catch (e) {
+
             return res.status(400).json({
                 message: "Falha ao tentar efetuar login no sistema",
                 error: e.message
             });
+
         }
 
     }
+
 }
