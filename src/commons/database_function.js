@@ -1,21 +1,50 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const connection = require('../database/connection');
 
 module.exports = {
-    async getListOfTableColumns(tableName, ignoreFields) {
+    async getListOfTableColumns(tableName, ignoreFields, useTimestamps = false) {
         const tableField = await connection('information_schema.columns')
             .select('column_name')
-            .where("table_name", tableName)
+            .where('table_name', tableName)
+            .orderBy('ordinal_position')
             .returning('column_name');
 
-        var columns = '';
         var separador = '';
+        var columns = '';
+        var internalIgnoredFields = "";
+
+        if (useTimestamps === false) {
+            internalIgnoredFields = 'created_at,updated_at,';
+        } else {
+            internalIgnoredFields = '';
+        }
+
+        internalIgnoredFields += ignoreFields;
 
         for (var i = 0; i <= tableField.length - 1; i++) {
-            if (!ignoreFields.includes(tableField[i]["column_name"]))
+            if (!internalIgnoredFields.includes(tableField[i]["column_name"]))
                 columns += separador + tableField[i]["column_name"];
-            separador = ',';
+            if (columns != '' && separador === '')
+                separador = ',';
         }
 
         return columns;
+    },
+    async validarEmailCadastroUsuario(email) {
+        const usuario = await connection('usuario')
+            .where('email', email)
+            .select();
+
+        if (usuario.length === 0) {
+            return false;
+        }
+
+        if (usuario[0]['id'] > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
