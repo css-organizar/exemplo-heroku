@@ -2,17 +2,19 @@ const connection = require('../database/connection');
 
 module.exports = {
 
-    async getListOfTableColumns(tableName, ignoreFields, useTimestamps = false) {
+    async getListOfTableColumns(tableName = '', ignoreFields = '', useTimestamps = false) {
+
+        var internalTableName = tableName || '';
 
         const tableField = await connection('information_schema.columns')
             .select('column_name')
-            .where('table_name', tableName)
+            .where('table_name', internalTableName)
             .orderBy('ordinal_position')
             .returning('column_name');
 
+        var internalIgnoredFields = "";
         var separador = '';
         var columns = '';
-        var internalIgnoredFields = "";
 
         if (useTimestamps === false) {
             internalIgnoredFields = 'created_at,updated_at,';
@@ -33,7 +35,7 @@ module.exports = {
 
     },
 
-    async validarEmailCadastroUsuario(email) {
+    async validarEmailCadastroUsuario(email = '') {
 
         const internalEmail = email || '';
 

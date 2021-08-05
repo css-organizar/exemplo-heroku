@@ -1,51 +1,50 @@
 const express = require('express');
-
-/**Utilitários para trabalhar com caminhos de arquivos e diretórios */
-
 const dotenv = require("dotenv-safe");
 const path = require('path');
 const cors = require('cors');
 
-/**Definição da porta para START da API */
-
-const PORT = process.env.PORT || 5000;
+dotenv.config();
 
 /**Iniciando o express */
 
-const applicationServer = express();
+const api = express();
 
 /**swagger */
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
 
-applicationServer.use(
+api.use(
     '/api-docs',
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocument)
 );
 
-/**Iniciando a API */
+/**Adicionando Dependências ao express */
 
-dotenv.config();
+api.use(express.static(path.join(__dirname, 'public')));
+api.set('views', path.join(__dirname, 'views'));
+api.set('view engine', 'ejs');
+api.use(cors());
+api.use(express.json());
+api.use(express.urlencoded({ extended: true }));
 
-applicationServer.use(express.static(path.join(__dirname, 'public')));
-applicationServer.set('views', path.join(__dirname, 'views'));
-applicationServer.set('view engine', 'ejs');
-applicationServer.use(cors());
-applicationServer.use(express.json());
-applicationServer.use(express.urlencoded({ extended: true }));
+/**Importando as Rotas */
 
-/**Routes */
-
+const SystemRoutes = require('./routes/system_routes');
 const UserRoutes = require('./routes/usuario_routes');
 const AuthenticationRoutes = require('./routes/authenticarion_routes');
-const SystemRoutes = require('./routes/system_routes');
 
-applicationServer.use(AuthenticationRoutes);
-applicationServer.use(UserRoutes);
-applicationServer.use(SystemRoutes);
+/**Adicionando Rotas ao express */
+
+api.use(AuthenticationRoutes);
+api.use(UserRoutes);
+api.use(SystemRoutes);
 
 /**Start da API */
 
-applicationServer.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const PORT = process.env.PORT || 5000;
+
+api.listen(PORT, () => {
+    console.log(`Listening on ${ PORT }`)
+});

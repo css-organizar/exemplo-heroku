@@ -10,31 +10,31 @@ UserRoutes.post(
 
 UserRoutes.post(
     '/v1/usuario',
-    jwtUtils.verifyJWT,
+    jwtUtils.JWTValidation,
     UsuarioController.create
 );
 
 UserRoutes.get(
     '/v1/usuario',
-    jwtUtils.verifyJWT,
+    jwtUtils.JWTValidation,
     UsuarioController.getAll
 );
 
 UserRoutes.get(
     '/v1/usuario/:id',
-    jwtUtils.verifyJWT,
+    jwtUtils.JWTValidation,
     UsuarioController.getById
 );
 
 UserRoutes.put(
     '/v1/usuario/:id',
-    jwtUtils.verifyJWT,
+    jwtUtils.JWTValidation,
     UsuarioController.update
 );
 
 UserRoutes.delete(
     '/v1/usuario/:id',
-    jwtUtils.verifyJWT,
+    jwtUtils.JWTValidation,
     UsuarioController.delete
 );
 

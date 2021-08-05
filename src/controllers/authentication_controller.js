@@ -34,11 +34,11 @@ module.exports = {
 
         try {
 
-            const { usr, pwd } = req.body;
+            const internalBody = req.body;
 
             const usuario = await connection('usuario')
                 .limit(1)
-                .where('email', usr)
+                .where('email', internalBody['usr'])
                 .select('*');
 
             if (usuario.length === 0) {
@@ -47,9 +47,9 @@ module.exports = {
                 });
             }
 
-            const pwdMD5 = md5(pwd);
+            const pwdMD5 = md5(internalBody['pwd']);
 
-            if (usr === usuario[0]['email'] && pwdMD5 === usuario[0]['senha']) {
+            if (internalBody['usr'] === usuario[0]['email'] && pwdMD5 === usuario[0]['senha']) {
 
                 //auth ok
                 const id = usuario[0]['id'];

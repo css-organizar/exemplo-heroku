@@ -3,19 +3,19 @@ const jwt_decode = require("jwt-decode");
 const connection = require('../database/connection');
 
 module.exports = {
-    verifyJWT(req, res, next) {
+    JWTValidation(req, res, next) {
         try {
 
-            const token = req.headers['token'];
+            const userToken = req.headers['token'] || '';
 
-            if (!token)
+            if (!userToken)
                 return res.status(401)
                     .json({
                         auth: false,
                         message: 'Token da Usuário inválido ou não informado.'
                     });
 
-            jwt.verify(token, process.env.SECRET, function(err, decoded) {
+            jwt.verify(userToken, process.env.SECRET, function(err, decoded) {
 
                 if (err)
                     return res.status(401)
@@ -46,13 +46,12 @@ module.exports = {
 
         try {
 
-            var appToken = req.headers['application-token'] || '';
+            const dataLocal = new Date();
+            var applicationToken = req.headers['application-token'] || '';
 
             const systemConfig = await connection('system')
-                .where('application_token', appToken)
+                .where('application_token', applicationToken)
                 .select();
-
-            const dataLocal = new Date();
 
             if (systemConfig[0]["data_bloqueio"] < dataLocal)
                 return res.status(400).send({
