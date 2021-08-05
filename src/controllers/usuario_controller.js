@@ -162,7 +162,8 @@ module.exports = {
             } else {
 
                 usuarios = await connection('usuario')
-                    .select(listOfTableColumns.split(","));
+                    .select(listOfTableColumns.split(","))
+                    .orderBy('id');
 
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
 
