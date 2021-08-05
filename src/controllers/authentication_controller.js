@@ -1,27 +1,31 @@
 const jwt = require('jsonwebtoken');
 const connection = require('../database/connection');
 const md5 = require('md5');
+const jwtUtils = require('../commons/jwt_function');
 
 module.exports = {
-    status(req, res, next) {
+    async status(req, res, next) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
             return res.status(200).json({
                 status: "ativo",
-                data: {
-                    data_status: new Date()
-                }
+                data_status: new Date()
             });
         } catch (e) {
             return res.status(400).json({
                 status: "inativo",
-                data: {
-                    data_status: new Date()
-                }
+                data_status: new Date(),
+                erro: e.message
             });
         }
     },
 
     async authentication(req, res, next) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
             const { usr, pwd } = req.body;
 
@@ -31,7 +35,7 @@ module.exports = {
                 .select('*');
 
             if (usuario.length === 0) {
-                res.status(401).json({
+                return res.status(401).json({
                     message: 'Login inválido!'
                 });
             }
@@ -45,9 +49,14 @@ module.exports = {
                 const email = usuario[0]['email'];
                 const nome = usuario[0]['nome'];
 
-                const token = jwt.sign({ id, email, nome }, process.env.SECRET, {
-                    expiresIn: 3600 // expires in 1h
-                });
+                const token = jwt.sign({
+                        id,
+                        email,
+                        nome
+                    },
+                    process.env.SECRET, {
+                        expiresIn: 3600 // expires in 1h
+                    });
 
                 return res.status(201).json({
                     auth: true,
@@ -56,12 +65,12 @@ module.exports = {
 
             }
 
-            res.status(401).json({
+            return res.status(401).json({
                 message: 'Login inválido!'
             });
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar efetuar login no sistema",
                 error: e.message
             });
         }

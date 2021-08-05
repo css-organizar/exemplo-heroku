@@ -6,18 +6,6 @@ const dotenv = require("dotenv-safe");
 const path = require('path');
 const cors = require('cors');
 
-/**Controle de URL */
-
-var url = require('url');
-
-function fullUrl(req) {
-    return url.format({
-        protocol: req.protocol,
-        host: req.get('host'),
-        pathname: req.originalUrl
-    });
-}
-
 /**Definição da porta para START da API */
 
 const PORT = process.env.PORT || 5000;

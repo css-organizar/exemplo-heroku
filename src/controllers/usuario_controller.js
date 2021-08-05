@@ -1,10 +1,14 @@
 const connection = require('../database/connection');
 const md5 = require('md5');
 const dbUtils = require('../commons/database_function');
+const jwtUtils = require('../commons/jwt_function');
 
 module.exports = {
 
     async register(req, res) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
             var internalBody = req.body;
 
@@ -59,13 +63,16 @@ module.exports = {
             return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar registar um novo usuário",
                 error: e.message
             });
         }
     },
 
     async create(req, res) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
             var { nome, email, telefone, senha } = req.body;
 
@@ -93,13 +100,16 @@ module.exports = {
             return res.status(201).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar gravar um usuario no sistema",
                 error: e.message
             });
         }
     },
 
     async getAll(req, res, next) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
 
             var usuarios;
@@ -123,13 +133,16 @@ module.exports = {
             }
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar listar usuarios",
                 error: e.message
             });
         }
     },
 
     async getById(req, res, next) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
             var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
 
@@ -140,13 +153,16 @@ module.exports = {
             return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios[0]);
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar listar usuario pelo ID",
                 error: e.message
             });
         }
     },
 
     async update(req, res) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
 
             var internalBody = req.body;
@@ -157,7 +173,13 @@ module.exports = {
                 });
             }
 
-            internalBody["senha"] = md5(internalBody["senha"]);
+            if (req.body["id"] != undefined) {
+                return res.status(400).json({
+                    message: "O campo id não pode ser informado neste método",
+                });
+            }
+
+            internalBody["senha"] = md5(internalBody["senha"]) || '';
 
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
@@ -179,13 +201,16 @@ module.exports = {
             return res.status(202).json(usuarios[0]);
         } catch (e) {
             return res.status(400).send({
-                message: "Falha",
+                message: "Falha ao tentar alterar dados do usuário",
                 error: e.message
             });
         }
     },
 
     async delete(req, res, next) {
+
+        await jwtUtils.validateApplicationToken(req, res);
+
         try {
 
             if (Number(req.params['id']) === 1) {
@@ -212,10 +237,10 @@ module.exports = {
                 .where('usuario.id', req.params['id'])
                 .del();
 
-            res.status(204).json(usuarios);
+            return res.status(204).json(usuarios);
         } catch (e) {
             return res.status(400).json({
-                message: "Falha",
+                message: "Falha ao tentar excluir usuario",
                 error: e.message
             });
         }
