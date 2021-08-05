@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const connection = require('../database/connection');
 const md5 = require('md5');
 const dbUtils = require('../commons/database_function');
@@ -11,66 +14,53 @@ const dbUtils = require('../commons/database_function');
  *   - 401: Unauthorized
  */
 
-async function emailValidation(email) {
-    const usuario = await connection('usuario')
-        .where('email', email)
-        .select();
-
-    if (usuario.length === 0) {
-        return false;
-    }
-
-    if (usuario[0]['id'] > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 module.exports = {
 
     async register(req, res) {
         try {
-            var { nome, email, telefone, senha } = req.body;
+            var internalBody = req.body;
 
-            if (await emailValidation(email) == true) {
+            if (req.body["usuario_perfil_id"] != undefined) {
+                return res.status(400).json({
+                    message: "O campo usuario_perfil_id não pode ser informado neste método",
+                });
+            }
+
+            if (await dbUtils.validarEmailCadastroUsuario(internalBody['email']) == true) {
                 return res.status(400).json({
                     message: "E-mail já cadastrado no sistema",
                 });
             }
 
-            if (nome === undefined) {
+            if (internalBody['nome'] === undefined) {
                 return res.status(400).json({
                     message: "Favor informar o nome do usuário",
                 });
             }
 
-            if (email === undefined) {
+            if (internalBody['email'] === undefined) {
                 return res.status(400).json({
                     message: "Favor informar o e-mail",
                 });
             }
 
-            if (telefone === undefined) {
+            if (internalBody['telefone'] === undefined) {
                 return res.status(400).json({
                     message: "Favor informar o número do telefone",
                 });
             }
 
-            if (senha === undefined) {
+            if (internalBody['senha'] === undefined) {
                 return res.status(400).json({
                     message: "Favor informar uma senha válida",
                 });
             }
 
-            senha = md5(senha);
+            internalBody['senha'] = md5(internalBody['senha']);
 
-            const [id] = await connection('usuario').insert({
-                nome,
-                email,
-                telefone,
-                senha,
-            }).returning('id');
+            const [id] = await connection('usuario')
+                .insert(internalBody)
+                .returning('id');
 
             var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
 
@@ -91,7 +81,7 @@ module.exports = {
         try {
             var { nome, email, telefone, senha } = req.body;
 
-            if (await emailValidation(email) == true) {
+            if (await dbUtils.validarEmailCadastroUsuario(email) == true) {
                 return res.status(400).json({
                     message: "E-mail já cadastrado no sistema",
                 });
@@ -124,19 +114,21 @@ module.exports = {
     async getAll(req, res, next) {
         try {
 
+            var usuarios;
+
             res.header('x-total-count', 0);
             res.header('x-total-count', 0);
 
             var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
 
             if (req.query['email'] != null) {
-                var usuarios = await connection('usuario')
+                usuarios = await connection('usuario')
                     .select(listOfTableColumns.split(","))
                     .where('usuario.email', req.query['email']);
 
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
             } else {
-                var usuarios = await connection('usuario')
+                usuarios = await connection('usuario')
                     .select(listOfTableColumns.split(","));
 
                 return res.status(usuarios.length > 0 ? 200 : 204).json(usuarios);
@@ -169,26 +161,24 @@ module.exports = {
     async update(req, res) {
         try {
 
+            var internalBody = req.body;
+
             if (Number(req.params['id']) === 1) {
                 return res.status(400).json({
                     message: "O usuário administrador nao pode ser alterado",
                 });
             }
 
-            if (req.body["senha"] != undefined) {
-                return res.status(400).json({
-                    message: "O campo senha não pode ser informado neste método",
-                });
-            }
+            internalBody["senha"] = md5(internalBody["senha"]);
 
             const [id] = await connection('usuario')
                 .where('id', req.params['id'])
-                .update(req.body)
+                .update(internalBody)
                 .returning('id');
 
             if (id === undefined) {
                 return res.status(400).json({
-                    message: "Código do usuário inválido ou inexistente",
+                    message: "O usuário informado não é valido ou o registro não existe no sistema",
                 });
             }
 
@@ -223,11 +213,14 @@ module.exports = {
 
             if (id === undefined) {
                 return res.status(400).json({
-                    message: "Código do usuário inválido ou inexistente",
+                    message: "O usuário informado não é valido ou o registro não existe no sistema",
                 });
             }
 
+            var listOfTableColumns = await dbUtils.getListOfTableColumns('usuario', 'senha');
+
             const usuarios = await connection('usuario')
+                .select(listOfTableColumns.split(","))
                 .where('usuario.id', req.params['id'])
                 .del();
 
@@ -239,4 +232,5 @@ module.exports = {
             });
         }
     }
+
 }
