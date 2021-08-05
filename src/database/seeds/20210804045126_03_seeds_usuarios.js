@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const md5 = require('md5');
 
 exports.seed = function(knex) {
     return knex('usuario')
         .then(function() {
-            const dataAtual = new Date();
             return knex('usuario').insert([{
-                    id: 1,
                     usuario_perfil_id: 1,
                     nome: 'administrador',
                     email: 'administrador@gmail.com',
