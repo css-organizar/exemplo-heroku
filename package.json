@@ -7,10 +7,10 @@
     },
     "main": "index.js",
     "scripts": {
-        "knexconfig": "npx knex migrate:latest && npx knex seed:run",
+        "knexconfig": "npx knex migrate:latest",
         "sync": "git push heroku master",
-        "start": "npx knex migrate:latest && npx knex seed:run && node src/index.js",
-        "dev": "npx knex migrate:latest && npx knex seed:run && nodemon --inspect src/index.js",
+        "start": "npx knex migrate:latest && node src/index.js",
+        "dev": "npx knex migrate:latest && nodemon --inspect src/index.js",
         "start-gendoc": "node swagger.js"
     },
     "dependencies": {

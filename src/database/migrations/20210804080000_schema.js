@@ -7,17 +7,21 @@ exports.up = function(knex) {
 
             table
                 .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
+                .comment("Identificador do Registro");
 
             table
                 .string('application_token')
-                .comment("Token de Identificação da Empresa")
-                .unique();
+                .comment("Token de Identificação da Empresa");
 
             table
                 .dateTime('data_bloqueio', { precision: 6 })
                 .defaultTo(knex.fn.now());
+
+            // table
+            //     .primary(["id"]);
+
+            table
+                .unique(["application_token"]);
 
         })
         .createTable('configuracoes', function(table) {
@@ -27,8 +31,7 @@ exports.up = function(knex) {
 
             table
                 .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
+                .comment("Identificador do Registro");
 
             table
                 .string('cpf_cnpj')
@@ -46,6 +49,12 @@ exports.up = function(knex) {
                 .string('email')
                 .comment("E-mail de contato");
 
+            // table
+            //     .primary(["id"]);
+
+            table
+                .unique(["cpf_cnpj"]);
+
         })
         .createTable('usuario_perfil', function(table) {
 
@@ -54,12 +63,14 @@ exports.up = function(knex) {
 
             table
                 .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
+                .comment("Identificador do Registro");
 
             table
                 .string('descricao')
                 .comment("Descrição do Perfil do usuário");
+
+            // table
+            //     .primary(["id"]);
 
         })
         .createTable('usuario', function(table) {
@@ -69,8 +80,7 @@ exports.up = function(knex) {
 
             table
                 .increments('id')
-                .comment("Identificador do Registro")
-                .primary();
+                .comment("Identificador do Registro");
 
             table
                 .integer('usuario_perfil_id')
@@ -102,6 +112,12 @@ exports.up = function(knex) {
                 .foreign("usuario_perfil_id")
                 .references("id")
                 .inTable("usuario_perfil");
+
+            // table
+            //     .primary(["id"]);
+
+            table
+                .unique(["email"]);
 
         })
 };
