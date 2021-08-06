@@ -18,6 +18,7 @@ exports.up = function(knex) {
                 .onConflict('id')
                 .ignore();
         }),
+
         knex('configuracoes')
         .then(function() {
             return knex('configuracoes')
@@ -27,6 +28,7 @@ exports.up = function(knex) {
                 .onConflict('id')
                 .merge();
         }),
+
         knex('usuario_perfil')
         .then(function() {
             return knex('usuario_perfil')
@@ -42,6 +44,7 @@ exports.up = function(knex) {
                 .onConflict('id')
                 .merge();
         }),
+
         knex('usuario')
         .then(function() {
             return knex('usuario').insert([{
